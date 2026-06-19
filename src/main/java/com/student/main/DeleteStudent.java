@@ -1,0 +1,34 @@
+package com.student.main;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+
+import com.student.entity.Student;
+
+public class DeleteStudent {
+
+    public static void main(String[] args) {
+
+        SessionFactory factory = new Configuration()
+                .configure("hibernate.cfg.xml")
+                .buildSessionFactory();
+
+        Session session = factory.openSession();
+        Transaction tx = session.beginTransaction();
+
+        Student s = session.get(Student.class, 101);
+
+        if (s != null) {
+            session.delete(s);
+            System.out.println("Student Deleted Successfully!");
+        } else {
+            System.out.println("Student Not Found!");
+        }
+
+        tx.commit();
+        session.close();
+        factory.close();
+    }
+}
